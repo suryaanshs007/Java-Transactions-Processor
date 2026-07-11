@@ -12,7 +12,7 @@ public class CsvDataManagerMain {
         String val = sc.next();
         try {cdmp.displayFilteredResults(val, cat);}
         catch(NullPointerException e){
-            System.out.println("No results found. Also, check your input category syntax.");
+            System.out.println("No results found. Also, check your input category syntax. It has to align with the column name of the CSV.");
         }
     }
 }
