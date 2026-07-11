@@ -1,21 +1,23 @@
-import java.io.File;
-import java.io.IOException;
-import java.nio.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class CdmPipeLineProcessor {
-    public Predicate<CdmPipelineBuild.Data> filter;
 
-    private CdmPipelineBuild cdm;
+
+public class CdmPipeLineProcessor {
+    private Predicate<CdmPipelineBuild.Data> filter;
+
+
+     CdmPipelineBuild cdm;
+     int count;
     CdmPipeLineProcessor() {
         this.cdm = new CdmPipelineBuild();
     }
-    private void defineFilter(String t, String type){
+     private void defineFilter(String t, String type){
         if(type.equals("status")){ this.filter=(a)->{
             return a.status.equals(t);
         };
@@ -25,12 +27,12 @@ public class CdmPipeLineProcessor {
                 return a.amt==Double.parseDouble(t);
             };
         }
-        else if(type.equals("amount >=")){
+        else if(type.equals("amount_>=")){
             this.filter=(a)->{
                 return a.amt>=Double.parseDouble(t);
             };
         }
-        else if(type.equals("amount <=")){
+        else if(type.equals("amount_<=")){
             this.filter=(a)->{
                 return a.amt<=Double.parseDouble(t);
             };
@@ -62,13 +64,17 @@ public class CdmPipeLineProcessor {
         }
 
         }
-    public void displayFilteredResults(String t, String type){
+        double averageAmount(String t, String type){
         this.defineFilter(t, type);
-        this.cdm.resultStream().filter(this.filter).forEach((a)->{
-            a.display();
-        });
+         this.count = (int) this.cdm.resultStream().filter(this.filter).count();
+         return this.cdm.resultStream().filter((this.filter)).map((a)->{
+             return a.amt;
+         }).reduce(0.0, (a, b)->a+b);
+        }
+
+     Stream<CdmPipelineBuild.Data> filteredStream(String t, String type){
+        this.defineFilter(t, type);
+        return this.cdm.resultStream().filter(this.filter);
     }
-
-
 
     }
