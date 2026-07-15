@@ -18,46 +18,46 @@ public class CdmPipeLineProcessor {
         this.cdm = new CdmPipelineBuild();
     }
      private void defineFilter(String t, String type){
-        if(type.equals("status")){ this.filter=(a)->{
+        if("status".contains(type)){ this.filter=(a)->{
             return a.status.equals(t);
         };
         }
-        else if(type.equals("amount")){
+        else if("amount".contains(type)){
             this.filter = (a)->{
                 return a.amt==Double.parseDouble(t);
             };
         }
-        else if(type.equals("amount_>=")){
+        else if("amount_>=".contains(type)){
             this.filter=(a)->{
                 return a.amt>=Double.parseDouble(t);
             };
         }
-        else if(type.equals("amount_<=")){
+        else if("amount_<=".contains(type)){
             this.filter=(a)->{
                 return a.amt<=Double.parseDouble(t);
             };
         }
-        else if(type.equals("city")){
+        else if("city".contains(type)){
             this.filter=(a)->{
                 return a.city.equals(t);
             };
         }
-        else if(type.equals("payment_method")){
+        else if("payment_method".contains(type)){
             this.filter=(a)->{
                 return a.paymentMeth.equals(t);
             };
         }
-        else if(type.equals("category")){
+        else if("category".contains(type)){
             this.filter=(a)->{
                 return a.cat.equals(t);
             };
         }
-        else if(type.equals("customer_id")){
+        else if("customer_id".contains(type)){
             this.filter=(a)->{
                 return a.custID.equals(t);
             };
         }
-        else if(type.equals("transaction_id")){
+        else if("transaction_id".contains(type)){
             this.filter=(a)->{
                 return a.transacId.equals(t);
             };
