@@ -24,7 +24,6 @@ public class CdmPipelineBuild {
         String paymentMeth;
         double amt;
         String status, city;
-        double sum;
 
         Data(ArrayList<String> fields) {
             this.transacId = fields.get(0);
@@ -35,9 +34,6 @@ public class CdmPipelineBuild {
             this.amt = Double.parseDouble(fields.get(5));
             this.status = fields.get(6);
             this.city = fields.get(7);
-        }
-        Data(double sum){
-            this.sum=sum;
         }
 
         void display() {
