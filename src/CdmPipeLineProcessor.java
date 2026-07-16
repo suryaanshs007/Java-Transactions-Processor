@@ -19,7 +19,7 @@ public class CdmPipeLineProcessor {
     }
      private void defineFilter(String t, String type){
         if("status".contains(type)){ this.filter=(a)->{
-            return a.status.equals(t);
+            return a.status.contains(t);
         };
         }
         else if("amount".contains(type)){
@@ -39,27 +39,27 @@ public class CdmPipeLineProcessor {
         }
         else if("city".contains(type)){
             this.filter=(a)->{
-                return a.city.equals(t);
+                return a.city.contains(t);
             };
         }
         else if("payment_method".contains(type)){
             this.filter=(a)->{
-                return a.paymentMeth.equals(t);
+                return a.paymentMeth.contains(t);
             };
         }
         else if("category".contains(type)){
             this.filter=(a)->{
-                return a.cat.equals(t);
+                return a.cat.contains(t);
             };
         }
         else if("customer_id".contains(type)){
             this.filter=(a)->{
-                return a.custID.equals(t);
+                return a.custID.contains(t);
             };
         }
         else if("transaction_id".contains(type)){
             this.filter=(a)->{
-                return a.transacId.equals(t);
+                return a.transacId.contains(t);
             };
         }
 
