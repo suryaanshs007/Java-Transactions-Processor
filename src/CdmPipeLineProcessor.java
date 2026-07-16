@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
@@ -10,60 +11,36 @@ import java.util.stream.Stream;
 
 public class CdmPipeLineProcessor {
     private Predicate<CdmPipelineBuild.Data> filter;
+    private HashMap<String, Predicate<CdmPipelineBuild.Data>> hmFilter;
 
 
      CdmPipelineBuild cdm;
      int count;
     CdmPipeLineProcessor() {
         this.cdm = new CdmPipelineBuild();
+        this.hmFilter=new HashMap<>();
     }
+   private void initialiseMap(String t){
+        this.hmFilter.put("status", a->a.status.contains(t));
+        this.hmFilter.put("amount", (a)->a.amt==Double.parseDouble(t));
+        this.hmFilter.put("amount_>=", a->a.amt>=Double.parseDouble(t));
+        this.hmFilter.put("amount_<=", a->a.amt<=Double.parseDouble(t));
+        this.hmFilter.put("city", a->a.city.contains(t));
+        this.hmFilter.put("payment_method", a->a.paymentMeth.contains(t));
+        this.hmFilter.put("category", a->a.cat.contains(t));
+        this.hmFilter.put("customer_id", a->a.custID.contains(t));
+        this.hmFilter.put("transaction_id", a->a.transacId.contains(t));
+    }
+
      private void defineFilter(String t, String type){
-        if("status".contains(type)){ this.filter=(a)->{
-            return a.status.contains(t);
-        };
-        }
-        else if("amount".contains(type)){
-            this.filter = (a)->{
-                return a.amt==Double.parseDouble(t);
-            };
-        }
-        else if("amount_>=".contains(type)){
-            this.filter=(a)->{
-                return a.amt>=Double.parseDouble(t);
-            };
-        }
-        else if("amount_<=".contains(type)){
-            this.filter=(a)->{
-                return a.amt<=Double.parseDouble(t);
-            };
-        }
-        else if("city".contains(type)){
-            this.filter=(a)->{
-                return a.city.contains(t);
-            };
-        }
-        else if("payment_method".contains(type)){
-            this.filter=(a)->{
-                return a.paymentMeth.contains(t);
-            };
-        }
-        else if("category".contains(type)){
-            this.filter=(a)->{
-                return a.cat.contains(t);
-            };
-        }
-        else if("customer_id".contains(type)){
-            this.filter=(a)->{
-                return a.custID.contains(t);
-            };
-        }
-        else if("transaction_id".contains(type)){
-            this.filter=(a)->{
-                return a.transacId.contains(t);
-            };
+        this.initialiseMap(t);
+        this.hmFilter.keySet()
+                .stream()
+                .filter(a->a.contains(type))
+                .forEach(a->this.filter=this.hmFilter.get(a));
         }
 
-        }
+
         double averageAmount(String t, String type){
         this.defineFilter(t, type);
          this.count = (int) this.cdm.resultStream().filter(this.filter).count();

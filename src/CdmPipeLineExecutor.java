@@ -1,9 +1,7 @@
 public class CdmPipeLineExecutor {
     private CdmPipeLineProcessor cdmp;
     public void displayFilteredResults(String t, String type){
-       this.cdmp.filteredStream(t, type).forEach((a)->{
-           a.display();
-       });
+       this.cdmp.filteredStream(t, type).forEach(CdmPipelineBuild.Data::display);
     }
     public void displayReducedResult(String t, String type){
         double res=this.cdmp.averageAmount(t, type);
